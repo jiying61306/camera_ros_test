@@ -1,7 +1,5 @@
 /************************************************************************************//**
- *  @file       test.cpp
- *
- *  @brief      Brief descriptinon of test.cpp 
+ *  @file       libfreenect2_ros_test.cpp
  *
  *  @date       2016-08-02 14:38
  *
@@ -27,11 +25,6 @@
 #include <tf/transform_broadcaster.h>
 
 using namespace cv;
-/* ======= Function ==================================================
- *   Name: main
- *   Description: main entry Function
- * =================================================================== 
- */
 Mat MatColor, MatDepth;
 
 ros::Publisher color_pub, depth_pub, cam_info_color_pub, cam_info_depth_pub;
@@ -67,8 +60,6 @@ void prepareTransforms(){
     );
   tf::Transform dtransform(depth_r_mat, depth_t_vec);
   tfbr->sendTransform(tf::StampedTransform(dtransform, h_depth.stamp, "kinect2", "kinect2_depth"));
-
-
 }
 void setCamInfo(){
   //color
@@ -118,7 +109,6 @@ void setCamInfo(){
   cam_info_color.P[11] = 0;
   ////
   //depth
-
   cam_info_depth.header = msg_DepthImage.header;
   cam_info_depth.height = msg_DepthImage.height;
   cam_info_depth.width  = msg_DepthImage.width;
@@ -182,7 +172,6 @@ void MattoMsg(){
   out_msgd.encoding = sensor_msgs::image_encodings::TYPE_32FC1; // Or whatever
   out_msgd.image    = MatDepth; // Your cv::Mat
   msg_DepthImage = *(out_msgd.toImageMsg());
-
 }
 void getCvMat(libfreenect2::Frame *rgb, libfreenect2::Frame *depth ){
 //  cv::Mat temp;
@@ -241,9 +230,8 @@ int main(int argc, char **argv){
   
   bool enable_rgb = true;
   bool enable_depth = true;
-
-
   int types = 0;
+
   if (enable_rgb)
     types |= libfreenect2::Frame::Color;
   if (enable_depth)
@@ -276,5 +264,3 @@ int main(int argc, char **argv){
 
   return 0;
 }
-
-
