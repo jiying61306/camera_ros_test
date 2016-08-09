@@ -121,12 +121,12 @@ void setCamInfo(){
   cam_info_depth.D.push_back(depthIntrinsics.k3);
   // cam_info_depth.D = std::vector<double>(5, 0.0);
 
-  cam_info_depth.K[0] = depthIntrinsics.fx*2;
+  cam_info_depth.K[0] = depthIntrinsics.fx;
   cam_info_depth.K[1] = 0;
-  cam_info_depth.K[2] = depthIntrinsics.cx*2;
+  cam_info_depth.K[2] = depthIntrinsics.cx;
   cam_info_depth.K[3] = 0;
-  cam_info_depth.K[4] = depthIntrinsics.fy*2;
-  cam_info_depth.K[5] = depthIntrinsics.cy*2;
+  cam_info_depth.K[4] = depthIntrinsics.fy;
+  cam_info_depth.K[5] = depthIntrinsics.cy;
   cam_info_depth.K[6] = 0;
   cam_info_depth.K[7] = 0;
   cam_info_depth.K[8] = 1;
@@ -141,13 +141,13 @@ void setCamInfo(){
   cam_info_depth.R[7] = 0.0;
   cam_info_depth.R[8] = 1.0;
 
-  cam_info_depth.P[0] = depthIntrinsics.fx*2;
+  cam_info_depth.P[0] = depthIntrinsics.fx;
   cam_info_depth.P[1] = 0;
-  cam_info_depth.P[2] = depthIntrinsics.cx*2;
+  cam_info_depth.P[2] = depthIntrinsics.cx;
   cam_info_depth.P[3] = 0;
   cam_info_depth.P[4] = 0;
-  cam_info_depth.P[5] = depthIntrinsics.fy*2;
-  cam_info_depth.P[6] = depthIntrinsics.cy*2;
+  cam_info_depth.P[5] = depthIntrinsics.fy;
+  cam_info_depth.P[6] = depthIntrinsics.cy;
   cam_info_depth.P[7] = 0;
   cam_info_depth.P[8] = 0;
   cam_info_depth.P[9] = 0;
@@ -178,7 +178,7 @@ void getCvMat(libfreenect2::Frame *rgb, libfreenect2::Frame *depth ){
   cv::Mat(depth->height, depth->width, CV_32FC1, depth->data).copyTo(MatDepth);
   cv::Mat(rgb->height, rgb->width, CV_8UC4, rgb->data).copyTo(MatColor);
 //  temp.convertTo(MatColor, CV_8UC3); 
-  MatDepth /= 2000.0f;
+  MatDepth /= 1000.0f;
 }
 void run(){
   libfreenect2::Registration* registration = new libfreenect2::Registration(dev->getIrCameraParams(), dev->getColorCameraParams());
