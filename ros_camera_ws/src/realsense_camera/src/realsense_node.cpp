@@ -60,15 +60,14 @@ void prepareTransforms(){
     );
   tf::Transform transform(color_r_mat, color_t_vec);
   tfbr->sendTransform(tf::StampedTransform(transform, h_color.stamp, "kinect2", "kinect2_color"));
- 
-  tf::Vector3 depth_t_vec(0, 0, 0);
-  tf::Matrix3x3 depth_r_mat(
-    1, 0, 0,
-    0, 1, 0,
-    0, 0, 1
-    );
-  tf::Transform dtransform(depth_r_mat, depth_t_vec);
-  tfbr->sendTransform(tf::StampedTransform(dtransform, h_depth.stamp, "kinect2", "kinect2_depth"));
+
+  rs_extrinsics z_extrinsic;
+   // extrinsics are offsets between the cameras
+  rs_get_device_extrinsics(rs_device_, RS_STREAM_DEPTH, RS_STREAM_COLOR, &z_extrinsic, &e);
+  check_error();
+  transform.setOrigin(tf::Vector3(z_extrinsic.translation[2], -z_extrinsic.translation[0], -z_extrinsic.translation[1]));
+  transform.setRotation(tf::Quaternion(0, 0, 0, 1));
+  tfbr->sendTransform(tf::StampedTransform(transform, h_depth.stamp, "kinect2", "kinect2_depth"));
 }
 void setCamInfoMsg(){
   rs_intrinsics colorIntrinsics, depthIntrinsics;
@@ -224,6 +223,7 @@ int main(int argc, char **argv){
  
   tfbr = new tf::TransformBroadcaster();
 
+  //set camera
 /* Create a context object. This object owns the handles to all connected realsense devices. */
   ctx = rs_create_context(RS_API_VERSION, &e);
   check_error();
