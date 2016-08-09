@@ -1,18 +1,15 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(ros_camera)
+project(realsense_camera)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-  roscpp
-  rospy
-  sensor_msgs
-  std_msgs
   cv_bridge
+  roscpp
+  std_msgs
   tf
 )
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 find_package(OpenCV REQUIRED )
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -71,7 +68,7 @@ find_package(OpenCV REQUIRED )
 ## Generate added messages and services with any dependencies listed here
 # generate_messages(
 #   DEPENDENCIES
-#   sensor_msgs#   std_msgs
+#   std_msgs
 # )
 
 ################################################
@@ -105,8 +102,8 @@ find_package(OpenCV REQUIRED )
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES ros_camera
-#  CATKIN_DEPENDS roscpp rospy sensor_msgs std_msgs
+#  LIBRARIES realsense_camera
+#  CATKIN_DEPENDS cv_bridge roscpp std_msgs tf
 #  DEPENDS system_lib
 )
 
@@ -119,40 +116,42 @@ catkin_package(
 # include_directories(include)
 include_directories(
   ${catkin_INCLUDE_DIRS}
-  /home/user/libfreenect2/include
-  /home/user/libfreenect2/build
-  include/${PROJECT_NAME}
+  include
+  /home/vlsilab/realsense/librealsense/include
 )
 
 ## Declare a C++ library
-# add_library(ros_camera
-#   src/${PROJECT_NAME}/ros_camera.cpp
+# add_library(realsense_camera
+#   src/${PROJECT_NAME}/realsense_camera.cpp
 # )
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
-# add_dependencies(ros_camera ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+# add_dependencies(realsense_camera ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Declare a C++ executable
-add_executable(cameratest src/kinect2_ros_test.cpp)
+# add_executable(realsense_camera_node src/realsense_camera_node.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
-# add_dependencies(ros_camera_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+# add_dependencies(realsense_camera_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-target_link_libraries(cameratest
-  ${catkin_LIBRARIES}
-  /home/user/libfreenect2/build/lib/libfreenect2.so
-  /home/user/libfreenect2/build/lib/libfreenect2.so.0.2
-  /home/user/libfreenect2/build/lib/libfreenect2.so.0.2.0
-  ${OpenCV_LIBS}
-)
+# target_link_libraries(realsense_camera_node
+#   ${catkin_LIBRARIES}
+# )
+add_executable(realsense_node src/realsense_node.cpp)
 
+target_link_libraries(realsense_node
+  ${catkin_LIBRARIES}
+  ${OpenCV_LIBS}
+  /home/vlsilab/realsense/librealsense/lib/librealsense.so
+)
 #############
 ## Install ##
 #############
+
 # all install targets should use catkin DESTINATION variables
 # See http://ros.org/doc/api/catkin/html/adv_user_guide/variables.html
 
@@ -164,7 +163,7 @@ target_link_libraries(cameratest
 # )
 
 ## Mark executables and/or libraries for installation
-# install(TARGETS ros_camera ros_camera_node
+# install(TARGETS realsense_camera realsense_camera_node
 #   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
@@ -189,7 +188,7 @@ target_link_libraries(cameratest
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_ros_camera.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_realsense_camera.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()
