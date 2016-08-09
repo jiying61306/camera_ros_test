@@ -187,17 +187,19 @@ void setImageMsg(){
 }
 void getStreamdata(float* dep_fra){
     rs_wait_for_frames(dev, &e);
-    //color stream
-    const uint16_t * depth_frame = (const uint16_t *)(rs_get_frame_data(dev, RS_STREAM_DEPTH, &e));
-  
+   
     //depth stream
+    const uint16_t * depth_frame = (const uint16_t *)(rs_get_frame_data(dev, RS_STREAM_DEPTH, &e));
     for(int y=0; y<RS_HEIGHT; ++y){
       for(int x=0; x<RS_WIDTH; ++x){
         int depth = *depth_frame++;
         dep_fra[y*RS_WIDTH + x] = depth * rs_get_device_depth_scale(dev, &e);
       }
     }
+    
+    //color stream
     uchar* colortemp = (unsigned char *) (rs_get_frame_data(rs_device_, RS_STREAM_COLOR, 0));
+    
     cv::Mat(RS_HEIGHT, RS_WIDTH, CV_32FC1, dep_fra).copyTo(MatDepth);
     cv::Mat(RS_HEIGHT, RS_WIDTH, CV_8UC3, colortemp).copyTo(MatColor);
 }
