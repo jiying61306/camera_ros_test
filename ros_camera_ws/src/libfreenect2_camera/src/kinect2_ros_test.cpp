@@ -161,13 +161,16 @@ void TopicPublisher(){
   cam_info_depth_pub.publish(cam_info_depth);
 }
 void MattoMsg(){
+  h_color.frame_id = "kinect2";
+  h_depth.frame_id = "kinect2";
   h_color.stamp = ros::Time::now(); 
   h_depth.stamp = ros::Time::now(); 
   out_msgc.header   = h_color; // Same timestamp and tf frame as input image
   out_msgc.encoding = sensor_msgs::image_encodings::RGB8; // Or whatever
   out_msgc.image    = MatColor; // Your cv::Mat
   msg_ColorImage = *(out_msgc.toImageMsg());
-  
+
+  msg_DepthImage.header = h_depth;
   out_msgd.header   = h_depth; // Same timestamp and tf frame as input image
   out_msgd.encoding = sensor_msgs::image_encodings::TYPE_32FC1; // Or whatever
   out_msgd.image    = MatDepth; // Your cv::Mat
