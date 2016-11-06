@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package>
-  <name>ros_camera</name>
+  <name>libfreenect2_camera</name>
   <version>0.0.0</version>
   <description>The ros_camera package</description>
 

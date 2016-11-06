@@ -117,7 +117,7 @@ catkin_package(
 include_directories(
   ${catkin_INCLUDE_DIRS}
   include
-  /home/vlsilab/realsense/librealsense/include
+  /home/user/realsense/librealsense/include
 )
 
 ## Declare a C++ library
@@ -146,7 +146,7 @@ add_executable(realsense_node src/realsense_node.cpp)
 target_link_libraries(realsense_node
   ${catkin_LIBRARIES}
   ${OpenCV_LIBS}
-  /home/vlsilab/realsense/librealsense/lib/librealsense.so
+  /home/user/realsense/librealsense/lib/librealsense.so
 )
 #############
 ## Install ##
